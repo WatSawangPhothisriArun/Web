@@ -414,7 +414,7 @@
 
     <script>
         // ⚠️ แทนที่ URL ด้านล่างด้วย Web App URL จากการ Deploy ใน Apps Script ของคุณ
-        const API_URL = "https://script.google.com/macros/s/AKfycbxr333qRle1Iege-IixGhIuaa-b95-KBsy_wyPuKd3jsREZ0tDVgiIA_09kWzCcDGc/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbxNMc9f-A59e8EqkDGh51hdBHMNtkMgumFTiykXBF-jgy_muiCtiypxN9rGTLiuby0/exec";
 
         let imagesArrayData = [];
         let isAdminLoggedIn = false;
@@ -616,20 +616,21 @@
                             let mainImg = images.length > 0 && images[0] ? images[0].trim() : 'https://images.unsplash.com/photo-1609137144813-7d722efcb400?auto=format&fit=crop&q=80&w=600';
                             let badgeHtml = images.length > 1 ? `<span class="image-count-badge"><i class="fa-regular fa-images me-1"></i> +${images.length - 1} รูป</span>` : '';
                             
-                            html += `
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card h-100">
-                                        <div class="zoom-img-container" onclick="openGallery(${index})">
-                                            <img src="${mainImg}" class="zoom-img" onerror="this.src='https://images.unsplash.com/photo-1609137144813-7d722efcb400?auto=format&fit=crop&q=80&w=600'">
-                                            ${badgeHtml}
-                                        </div>
-                                        <div class="card-body p-3">
-                                            <span class="text-secondary small fw-bold d-block mb-1"><i class="fa-regular fa-clock me-1"></i>${item.date || ''}</span>
-                                            <h6 class="card-title fw-bold" style="font-size:1.05rem;">${item.title || ''}</h6>
-                                            <p class="card-text text-muted small mt-2 mb-0">${item.details || ''}</p>
-                                        </div>
-                                    </div>
-                                </div>`;
+// ปรับโครงสร้างการ์ดใน loadActivities()
+html += `
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="zoom-img-container" onclick="openGallery(${index})">
+                <img src="${mainImg}" class="zoom-img" referrerpolicy="no-referrer" onerror="this.src='https://via.placeholder.com/600x400?text=No+Image'">
+                ${badgeHtml}
+            </div>
+            <div class="card-body p-3">
+                <span class="text-secondary small fw-bold d-block mb-1"><i class="fa-regular fa-clock me-1"></i>${item.date || ''}</span>
+                <h6 class="card-title fw-bold" style="font-size:1.05rem;">${item.title || 'ไม่มีหัวข้อ'}</h6>
+                <p class="card-text text-muted small mt-2 mb-0">${item.details || ''}</p>
+            </div>
+        </div>
+    </div>`;
                         });
                     }
                     listEl.innerHTML = html;
