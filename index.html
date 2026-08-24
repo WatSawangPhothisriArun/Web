@@ -420,6 +420,11 @@
         let isAdminLoggedIn = false;
         let globalActivities = [];
 
+        // โหลดข้อมูลกิจกรรมเมื่อโหลดหน้าเว็บครั้งแรก
+        document.addEventListener("DOMContentLoaded", () => {
+            loadActivities();
+        });
+
         // สลับหน้าจอ เมนู Sidebar
         function switchPage(pageId, element) {
             if (pageId.startsWith('admin-') && !isAdminLoggedIn) {
@@ -465,6 +470,9 @@
                         } else {
                             Swal.fire({ icon: 'error', title: 'เข้าสู่ระบบไม่สำเร็จ', text: response.message });
                         }
+                    })
+                    .catch(error => {
+                        Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาดในการเชื่อมต่อ', text: error.message });
                     });
                 }
             });
@@ -552,6 +560,9 @@
                 } else {
                     Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: response.message });
                 }
+            })
+            .catch(error => {
+                Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: error.message });
             });
         }
 
@@ -578,6 +589,9 @@
                 } else {
                     Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: response.message });
                 }
+            })
+            .catch(error => {
+                Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: error.message });
             });
         }
 
@@ -615,6 +629,37 @@
                         });
                     }
                     document.getElementById('activity-list').innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById('activity-list').innerHTML = '<div class="col-12 text-center py-5 text-danger"><p>ไม่สามารถโหลดข้อมูลกิจกรรมได้</p></div>';
+                });
+        }
+
+        // ดึงรายการปฏิทินแสดงผล
+        function loadCalendar() {
+            fetch(API_URL + '?sheet=calendar')
+                .then(r => r.json())
+                .then(res => {
+                    const data = res.data || [];
+                    let html = '';
+                    if (data.length === 0) {
+                        html = '<tr><td colspan="3" class="text-center py-4 text-muted">ยังไม่มีวาระงานบุญในระบบ</td></tr>';
+                    } else {
+                        data.forEach(item => {
+                            let dateStr = item.start_date || '';
+                            if (item.end_date) dateStr += ' - ' + item.end_date;
+                            html += `
+                                <tr>
+                                    <td class="fw-bold text-secondary">${dateStr}</td>
+                                    <td class="fw-bold text-primary-emphasis">${item.title || ''}</td>
+                                    <td class="text-muted small">${item.description || '-'}</td>
+                                </tr>`;
+                        });
+                    }
+                    document.getElementById('calendar-table-body').innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById('calendar-table-body').innerHTML = '<tr><td colspan="3" class="text-center py-4 text-danger">ไม่สามารถโหลดข้อมูลปฏิทินได้</td></tr>';
                 });
         }
 
@@ -631,43 +676,15 @@
                 if(imgUrl.trim()){
                     galleryHtml += `
                         <div class="col-6 col-md-4">
-                            <a href="${imgUrl}" target="_blank">
-                                <img src="${imgUrl}" class="img-fluid rounded border shadow-sm" style="height: 160px; width: 100%; object-fit: cover;">
-                            </a>
+                            <img src="${imgUrl.trim()}" class="img-fluid rounded border shadow-sm w-100 h-100" style="object-fit: cover; max-height: 200px;">
                         </div>`;
                 }
             });
+
             document.getElementById('galleryContainer').innerHTML = galleryHtml;
-            new bootstrap.Modal(document.getElementById('imageGalleryModal')).show();
+            const modal = new bootstrap.Modal(document.getElementById('imageGalleryModal'));
+            modal.show();
         }
-
-        // ดึงรายการตารางปฏิทิน
-        function loadCalendar() {
-            fetch(API_URL + '?sheet=calendar')
-                .then(r => r.json())
-                .then(res => {
-                    const data = res.data || [];
-                    let html = '';
-                    
-                    if(data.length === 0) {
-                        html = '<tr><td colspan="3" class="text-center py-4 text-muted">ขณะนี้ไม่มีตารางหรือคอร์สกำหนดการล่วงหน้า</td></tr>';
-                    } else {
-                        data.reverse().forEach(item => {
-                            let end = item.end_date ? ' - ' + item.end_date : '';
-                            html += `
-                                <tr>
-                                    <td class="fw-bold text-secondary"><i class="fa-regular fa-calendar me-2 text-warning"></i>${item.start_date || ''}${end}</td>
-                                    <td class="fw-bold text-dark">${item.title || ''}</td>
-                                    <td class="text-muted small">${item.description || '-'}</td>
-                                </tr>`;
-                        });
-                    }
-                    document.getElementById('calendar-table-body').innerHTML = html;
-                });
-        }
-
-        // เรียกใช้งานโหลดข้อมูลครั้งแรกเมื่อเปิดเว็บ
-        window.onload = function() { loadActivities(); };
     </script>
 </body>
 </html>
