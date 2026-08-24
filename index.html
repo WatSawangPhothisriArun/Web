@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>วัดสว่างโพธิ์ศรีอรุณ</title>
+    
+    <!-- CSS External Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Sarabun:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --som-primary: #D35400;
+            --som-hover: #B33B00;
+            --som-light: #FDF2E9;
+            --bg-body: #F9FAFB;
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            --transition: all 0.25s ease-in-out;
+        }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: var(--bg-body);
+            color: #2C3E50;
+            font-size: 15px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Kanit', sans-serif;
+            font-weight: 500;
+            color: #1C2833;
+        }
+
+        /* Banner Header */
+        .temple-banner {
+            background: #FFFFFF;
+            padding: 35px 20px;
+            border-bottom: 1px solid #E5E7E9;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .temple-title {
+            color: var(--som-primary);
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sidebar Nav */
+        .sidebar {
+            background: #FFFFFF;
+            border: 1px solid #E5E7E9;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .sidebar .nav-link {
+            color: #5D6D7E;
+            padding: 12px 16px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            font-weight: 400;
+            transition: var(--transition);
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: var(--som-light);
+            color: var(--som-primary);
+        }
+
+        .sidebar .nav-link.active {
+            background-color: var(--som-primary);
+            color: #FFFFFF !important;
+            font-weight: 500;
+        }
+
+        /* Cards and Gallery */
+        .card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7E9;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .zoom-img-container {
+            height: 210px;
+            overflow: hidden;
+            position: relative;
+            background: #F2F4F4;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            cursor: pointer;
+        }
+
+        .zoom-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .zoom-img-container:hover .zoom-img {
+            transform: scale(1.06);
+        }
+
+        .image-count-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #FFFFFF;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Custom Table */
+        .table-custom {
+            background: #FFFFFF;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #E5E7E9;
+            box-shadow: var(--card-shadow);
+        }
+
+        .table-custom thead {
+            background: #F4F6F6;
+            font-family: 'Kanit';
+            color: #34495E;
+        }
+
+        /* Upload Zone */
+        .upload-zone {
+            border: 2px dashed #CBD5E1;
+            background: #FAFAFA;
+            border-radius: 12px;
+            padding: 35px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-zone:hover {
+            border-color: var(--som-primary);
+            background: var(--som-light);
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .preview-item {
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #E5E7E9;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Buttons */
+        .btn-som {
+            background: var(--som-primary);
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: 'Kanit';
+            transition: var(--transition);
+        }
+
+        .btn-som:hover {
+            background: var(--som-hover);
+            color: #FFFFFF;
+        }
+
+        .temple-footer {
+            background: #FFFFFF;
+            color: #7F8C8D;
+            padding: 30px 0;
+            border-top: 1px solid #E5E7E9;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="temple-banner text-center mb-4">
+        <div class="container">
+            <i class="fa-solid fa-seedling fa-2x mb-2" style="color: var(--som-primary);"></i>
+            <h1 class="temple-title mb-1">วัดสว่างโพธิ์ศรีอรุณ</h1>
+            <p class="text-muted mb-0 small">ตำบลห้วยโพธิ์ อำเภอเมือง จังหวัดกาฬสินธุ์ • สถานที่สงบ จิตตื่นรู้ ปฏิบัติและพัฒนาธรรมเพื่อชุมชน</p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container px-lg-4">
+        <div class="row">
+            
+            <!-- Sidebar Navigation -->
+            <aside class="col-md-3 mb-4">
+                <div class="sidebar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="switchPage('home', this)">
+                                <i class="fa-solid fa-newspaper me-2"></i> ข่าวประชาสัมพันธ์
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="switchPage('history', this)">
+                                <i class="fa-solid fa-gopuram me-2"></i> ประวัติทำเนียบวัด
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="switchPage('calendar', this)">
+                                <i class="fa-solid fa-calendar-check me-2"></i> ตารางกิจกรรม/กิจสงฆ์
+                            </a>
+                        </li>
+                        
+                        <hr style="color: #E5E7E9; margin: 12px 0;">
+                        
+                        <li class="nav-item" id="login-menu-item">
+                            <a class="nav-link text-secondary" href="#" onclick="promptAdminLogin()">
+                                <i class="fa-solid fa-user-lock me-2"></i> เข้าสู่ระบบแอดมิน
+                            </a>
+                        </li>
+                        <li class="nav-item d-none" id="logout-menu-item">
+                            <a class="nav-link text-danger" href="#" onclick="adminLogout()">
+                                <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> ออกจากระบบหลังบ้าน
+                            </a>
+                        </li>
+
+                        <!-- Admin Only Menu -->
+                        <div id="admin-menu-section" class="d-none mt-2">
+                            <span class="small text-muted px-3 fw-bold">เมนูผู้ดูแลระบบ</span>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="switchPage('admin-activity', this)">
+                                    <i class="fa-solid fa-cloud-arrow-up me-2"></i> อัปโหลดข่าวใหม่
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" onclick="switchPage('admin-calendar', this)">
+                                    <i class="fa-solid fa-calendar-plus me-2"></i> เพิ่มวาระปฏิทิน
+                                </a>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="col-md-9">
+                
+                <!-- Page 1: ข่าวประชาสัมพันธ์ -->
+                <div id="page-home" class="page-section">
+                    <h4 class="mb-4"><i class="fa-solid fa-bullhorn text-muted me-2"></i> กิจกรรมและงานบุญล่าสุด</h4>
+                    <div class="row" id="activity-list">
+                        <div class="col-12 text-center py-5">
+                            <div class="spinner-border text-warning" role="status"></div>
+                            <p class="text-muted mt-2 small">กำลังโหลดข้อมูลกิจกรรม...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page 2: ประวัติวัด -->
+                <div id="page-history" class="page-section d-none">
+                    <h4 class="mb-4"><i class="fa-solid fa-monument text-muted me-2"></i> ประวัติและความเป็นมา</h4>
+                    <div class="card p-4">
+                        <h5 class="fw-bold text-warning-emphasis mb-3">วัดสว่างโพธิ์ศรีอรุณ</h5>
+                        <p class="text-muted lh-lg">
+                            วัดสว่างโพธิ์ศรีอรุณ ตั้งอยู่ที่ ตำบลห้วยโพธิ์ อำเภอเมือง จังหวัดกาฬสินธุ์ เป็นศูนย์รวมจิตใจของพุทธศาสนิกชนในท้องถิ่น มุ่งเน้นการส่งเสริมการปฏิบัติธรรม การอบรมคุณธรรมจริยธรรม ตลอดจนการสืบสานประเพณีทางพระพุทธศาสนาและพัฒนาชุมชนให้อยู่ร่วมกันอย่างมีความสุข
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Page 3: ตารางกิจกรรม / ปฏิทิน -->
+                <div id="page-calendar" class="page-section d-none">
+                    <h4 class="mb-4"><i class="fa-solid fa-calendar-days text-muted me-2"></i> กำหนดการและตารางวาระล่วงหน้า</h4>
+                    <div class="table-responsive table-custom">
+                        <table class="table table-hover mb-0 align-middle">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%">วันที่กำหนด</th>
+                                    <th style="width: 40%">กิจกรรม/โครงการ</th>
+                                    <th style="width: 35%">รายละเอียด / สถานที่จัด</th>
+                                </tr>
+                            </thead>
+                            <tbody id="calendar-table-body">
+                                <tr>
+                                    <td colspan="3" class="text-center py-4 text-muted">กำลังโหลดข้อมูล...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Page 4: [แอดมิน] อัปโหลดข่าวกิจกรรม -->
+                <div id="page-admin-activity" class="page-section d-none">
+                    <div class="card p-4">
+                        <h5 class="mb-3 text-warning-emphasis"><i class="fa-solid fa-plus-circle me-2"></i> อัปโหลดข่าวกิจกรรมและรูปภาพ</h5>
+                        <form id="activityForm" onsubmit="handleActivitySubmit(event)">
+                            <div class="row">
+                                <div class="col-md-8 mb-3">
+                                    <label class="form-label fw-bold small text-secondary">หัวข้อข่าวสาร/งานบุญ</label>
+                                    <input type="text" name="title" class="form-control" required placeholder="เช่น พิธีถวายสังฆทานประจำเดือน">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label fw-bold small text-secondary">วันที่จัดกิจกรรม</label>
+                                    <input type="date" name="date" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-secondary">รายละเอียดข่าวสาร</label>
+                                <textarea name="details" class="form-control" rows="4" required placeholder="ใส่เนื้อหาข่าวสาร..."></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-secondary">รูปภาพประกอบ (เลือกได้หลายรูป)</label>
+                                <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                                    <i class="fa-regular fa-images fa-3x text-muted mb-2"></i>
+                                    <h6>คลิกที่นี่เพื่อเลือกรูปภาพจากเครื่อง</h6>
+                                    <span class="small text-muted">รองรับไฟล์ภาพ JPG, PNG (ระบบจะบีบอัดภาพให้อัตโนมัติ)</span>
+                                    <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="processMultipleImages(this)">
+                                </div>
+                                <div id="previewBox" class="mt-3 d-none">
+                                    <span class="small text-muted">เลือกรูปภาพแล้ว (<span id="img-count" class="fw-bold text-success">0</span> รูป):</span>
+                                    <div class="preview-grid" id="previewGrid"></div>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-som"><i class="fa-solid fa-cloud-arrow-up me-1"></i> บันทึกข้อมูลและอัปโหลด</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Page 5: [แอดมิน] เพิ่มปฏิทินวาระ -->
+                <div id="page-admin-calendar" class="page-section d-none">
+                    <div class="card p-4">
+                        <h5 class="mb-3 text-warning-emphasis"><i class="fa-solid fa-calendar-plus me-2"></i> เพิ่มวาระกำหนดการในปฏิทิน</h5>
+                        <form id="calendarForm" onsubmit="handleCalendarSubmit(event)">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-secondary">ชื่อกิจกรรม / วาระงานบุญ</label>
+                                <input type="text" name="title" class="form-control" required placeholder="เช่น ปฏิบัติธรรมสวดมนต์ข้ามปี">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold small text-secondary">วันที่เริ่มต้น</label>
+                                    <input type="date" name="start_date" class="form-control" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold small text-secondary">วันที่สิ้นสุด (ถ้ามี)</label>
+                                    <input type="date" name="end_date" class="form-control">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small text-secondary">สถานที่ / หมายเหตุเพิ่มเติม</label>
+                                <textarea name="description" class="form-control" rows="3" placeholder="ระบุสถานที่ หรือข้อปฏิบัติตน..."></textarea>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-som"><i class="fa-solid fa-check me-1"></i> เพิ่มข้อมูลปฏิทิน</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Image Gallery Modal -->
+    <div class="modal fade" id="imageGalleryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="galleryModalTitle">รูปภาพกิจกรรม</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="galleryContainer" class="row g-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="temple-footer text-center">
+        <div class="container">
+            <p class="mb-1">วัดสว่างโพธิ์ศรีอรุณ ตำบลห้วยโพธิ์ อำเภอเมือง จังหวัดกาฬสินธุ์</p>
+            <small>© 2026 วัดสว่างโพธิ์ศรีอรุณ - สงวนลิขสิทธิ์</small>
+        </div>
+    </footer>
+
+    <!-- JavaScript Execution Logic -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ⚠️ นำ URL ของ Web App จาก Apps Script มาวางแทนที่ตรงนี้
+        const API_URL = "https://script.google.com/macros/s/AKfycbwfsScc8omaS9zMS_BCWo3hXDM8R9yIdYHaKzch4Yx2QGGXZq4YF4aOZKD3t0Vbz-A/exec";
+
+        let imagesArrayData = [];
+        let isAdminLoggedIn = false;
+        let globalActivities = [];
+
+        // สลับหน้าจอ เมนู Sidebar
+        function switchPage(pageId, element) {
+            if (pageId.startsWith('admin-') && !isAdminLoggedIn) {
+                Swal.fire({ icon: 'error', title: 'ปฏิเสธการเข้าถึง', text: 'กรุณาเข้าสู่ระบบแอดมินก่อนใช้งานครับ' });
+                return;
+            }
+
+            document.querySelectorAll('.page-section').forEach(s => s.classList.add('d-none'));
+            document.getElementById('page-' + pageId).classList.remove('d-none');
+            
+            document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+            if(element) element.classList.add('active');
+            
+            if (pageId === 'home') loadActivities();
+            if (pageId === 'calendar') loadCalendar();
+        }
+
+        // ระบบล็อกอินแอดมิน
+        function promptAdminLogin() {
+            Swal.fire({
+                title: 'เข้าสู่ระบบแอดมิน',
+                input: 'password',
+                inputPlaceholder: 'กรอกรหัสผ่านแอดมิน',
+                showCancelButton: true,
+                confirmButtonText: 'เข้าสู่ระบบ',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#D35400'
+            }).then((result) => {
+                if (result.isConfirmed && result.value) {
+                    Swal.showLoading();
+                    fetch(API_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: 'checkAdmin', password: result.value })
+                    })
+                    .then(r => r.json())
+                    .then(response => {
+                        if (response.success) {
+                            isAdminLoggedIn = true;
+                            document.getElementById('admin-menu-section').classList.remove('d-none');
+                            document.getElementById('login-menu-item').classList.add('d-none');
+                            document.getElementById('logout-menu-item').classList.remove('d-none');
+                            Swal.fire({ icon: 'success', title: 'สำเร็จ', text: response.message });
+                        } else {
+                            Swal.fire({ icon: 'error', title: 'เข้าสู่ระบบไม่สำเร็จ', text: response.message });
+                        }
+                    });
+                }
+            });
+        }
+
+        // ออกจากระบบแอดมิน
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('admin-menu-section').classList.add('d-none');
+            document.getElementById('login-menu-item').classList.remove('d-none');
+            document.getElementById('logout-menu-item').classList.add('d-none');
+            switchPage('home');
+            Swal.fire({ icon: 'info', title: 'ออกจากระบบแล้ว', timer: 1500, showConfirmButton: false });
+        }
+
+        // ประมวลผลและบีบอัดรูปภาพฝั่ง Client
+        async function processMultipleImages(input) {
+            const files = Array.from(input.files);
+            const previewGrid = document.getElementById('previewGrid');
+            previewGrid.innerHTML = '';
+            imagesArrayData = [];
+            
+            if (files.length > 0) {
+                document.getElementById('previewBox').classList.remove('d-none');
+                document.getElementById('img-count').innerText = files.length;
+                
+                for (const file of files) {
+                    const compressedBase64 = await compressImage(file);
+                    imagesArrayData.push(compressedBase64);
+                    
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'preview-item';
+                    itemDiv.innerHTML = `<img src="${compressedBase64}">`;
+                    previewGrid.appendChild(itemDiv);
+                }
+            }
+        }
+
+        // ฟังก์ชันบีบอัดไฟล์ภาพด้วย Canvas ก่อนส่งเข้า API
+        function compressImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxWidth = 800; 
+                        const scale = maxWidth / img.width;
+                        
+                        canvas.width = img.width > maxWidth ? maxWidth : img.width;
+                        canvas.height = img.width > maxWidth ? img.height * scale : img.height;
+                        
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.75));
+                    }
+                    img.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ส่งฟอร์มบันทึกข่าวกิจกรรม
+        function handleActivitySubmit(event) {
+            event.preventDefault();
+            Swal.fire({ title: 'กำลังอัปโหลด...', text: 'กรุณารอสักครู่', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            const form = document.getElementById('activityForm');
+            const formData = new FormData(form);
+            const dataObj = {};
+            formData.forEach((value, key) => { dataObj[key] = value; });
+
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'saveActivity', dataObj: dataObj, imagesArray: imagesArrayData })
+            })
+            .then(r => r.json())
+            .then(response => {
+                if (response.success) {
+                    Swal.fire({ icon: 'success', title: 'เรียบร้อย!', text: response.message });
+                    form.reset();
+                    document.getElementById('previewBox').classList.add('d-none');
+                    imagesArrayData = [];
+                    loadActivities();
+                } else {
+                    Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: response.message });
+                }
+            });
+        }
+
+        // ส่งฟอร์มบันทึกตารางปฏิทิน
+        function handleCalendarSubmit(event) {
+            event.preventDefault();
+            Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            const form = document.getElementById('calendarForm');
+            const formData = new FormData(form);
+            const dataObj = {};
+            formData.forEach((value, key) => { dataObj[key] = value; });
+
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'saveCalendar', dataObj: dataObj })
+            })
+            .then(r => r.json())
+            .then(response => {
+                if (response.success) {
+                    Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: response.message });
+                    form.reset();
+                    loadCalendar();
+                } else {
+                    Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: response.message });
+                }
+            });
+        }
+
+        // ดึงรายการกิจกรรมแสดงหน้าแรก
+        function loadActivities() {
+            fetch(API_URL + '?sheet=activities')
+                .then(r => r.json())
+                .then(res => {
+                    const data = res.data || [];
+                    globalActivities = data;
+                    let html = '';
+                    
+                    if(data.length === 0) {
+                        html = '<div class="col-12 text-center py-5 text-muted"><p>ยังไม่มีข่าวกิจกรรมอัปเดตในขณะนี้</p></div>';
+                    } else {
+                        data.reverse().forEach((item, index) => {
+                            let images = item.image_url ? item.image_url.split(',') : [];
+                            let mainImg = images.length > 0 && images[0] ? images[0] : 'https://images.unsplash.com/photo-1609137144813-7d722efcb400?auto=format&fit=crop&q=80&w=600';
+                            let badgeHtml = images.length > 1 ? `<span class="image-count-badge"><i class="fa-regular fa-images me-1"></i> +${images.length - 1} รูป</span>` : '';
+                            
+                            html += `
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card h-100">
+                                        <div class="zoom-img-container" onclick="openGallery(${index})">
+                                            <img src="${mainImg}" class="zoom-img">
+                                            ${badgeHtml}
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <span class="text-secondary small fw-bold d-block mb-1"><i class="fa-regular fa-clock me-1"></i>${item.date || ''}</span>
+                                            <h6 class="card-title fw-bold" style="font-size:1.05rem;">${item.title || ''}</h6>
+                                            <p class="card-text text-muted small mt-2 mb-0">${item.details || ''}</p>
+                                        </div>
+                                    </div>
+                                </div>`;
+                        });
+                    }
+                    document.getElementById('activity-list').innerHTML = html;
+                });
+        }
+
+        // เปิดดูภาพทั้งหมดใน Modal
+        function openGallery(index) {
+            const item = globalActivities[index];
+            if(!item) return;
+            const images = item.image_url ? item.image_url.split(',') : [];
+            if(images.length === 0) return;
+
+            document.getElementById('galleryModalTitle').innerText = item.title || 'รูปภาพกิจกรรม';
+            let galleryHtml = '';
+            images.forEach(imgUrl => {
+                if(imgUrl.trim()){
+                    galleryHtml += `
+                        <div class="col-6 col-md-4">
+                            <a href="${imgUrl}" target="_blank">
+                                <img src="${imgUrl}" class="img-fluid rounded border shadow-sm" style="height: 160px; width: 100%; object-fit: cover;">
+                            </a>
+                        </div>`;
+                }
+            });
+            document.getElementById('galleryContainer').innerHTML = galleryHtml;
+            new bootstrap.Modal(document.getElementById('imageGalleryModal')).show();
+        }
+
+        // ดึงรายการตารางปฏิทิน
+        function loadCalendar() {
+            fetch(API_URL + '?sheet=calendar')
+                .then(r => r.json())
+                .then(res => {
+                    const data = res.data || [];
+                    let html = '';
+                    
+                    if(data.length === 0) {
+                        html = '<tr><td colspan="3" class="text-center py-4 text-muted">ขณะนี้ไม่มีตารางหรือคอร์สกำหนดการล่วงหน้า</td></tr>';
+                    } else {
+                        data.reverse().forEach(item => {
+                            let end = item.end_date ? ' - ' + item.end_date : '';
+                            html += `
+                                <tr>
+                                    <td class="fw-bold text-secondary"><i class="fa-regular fa-calendar me-2 text-warning"></i>${item.start_date || ''}${end}</td>
+                                    <td class="fw-bold text-dark">${item.title || ''}</td>
+                                    <td class="text-muted small">${item.description || '-'}</td>
+                                </tr>`;
+                        });
+                    }
+                    document.getElementById('calendar-table-body').innerHTML = html;
+                });
+        }
+
+        // เรียกใช้งานโหลดข้อมูลครั้งแรกเมื่อเปิดเว็บ
+        window.onload = function() { loadActivities(); };
+    </script>
+</body>
+</html>
